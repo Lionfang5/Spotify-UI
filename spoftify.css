@@ -1,0 +1,54 @@
+body {
+    background-color: black;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+audio {
+    width: 50%; /* Stretch to full width */
+  
+}
+        figcaption {
+    font-style: italic;
+    color: white;
+    font-size: 50px;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .controls button {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .controls button svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+            transition: transform 0.2s ease;
+        }
+
+        .controls button svg:hover {
+            transform: scale(1.2);
+        }
+
+        .progress-bar {
+            width: 90%;
+            margin: 10px auto;
+            background: #333;
+            border-radius: 5px;
+            height: 5px;
+        }
+
+        .progress {
+            width: 0;
+            height: 100%;
+            background: #1db954;
+            border-radius: 5px;
+        }
+

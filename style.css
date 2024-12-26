@@ -1,0 +1,8 @@
+.a {
+    display: flex;                /* Use Flexbox for alignment */
+    justify-content: center;      /* Center content horizontally */
+    align-items: center;          /* Center content vertically */
+    height: 100px;                /* Full viewport height */
+    margin: 0;                    /* Remove default margins */
+    box-sizing: border-box;       /* Ensure consistent sizing */
+}

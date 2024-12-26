@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Audio Player</title>
+    <style>  
+        body {
+            text-align: left;
+            background-color: #121212;
+            color: white;
+            font-family: Arial, sans-serif;
+            background-image: url('waevptlxaom41.png');
+            background-size: cover;
+            position: relative; /* Make sure overlay can sit on top */
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-size: cover;
+            background-color: rgba(11, 11, 11, 0.5); /* Default overlay color */
+            z-index: -1; /* Ensure it stays behind content */
+            transition: background-color 0.5s ease; /* Smooth transition for background color */
+        }
+
+        figure {
+            margin: 20px auto;
+        }
+
+        img {
+            width: 300px;
+            border-radius: 1px;
+            padding-left: 80px;
+            padding-top: 100px;
+        }
+
+        figcaption {
+            font-style: italic;
+            margin: 10px 0;
+            font-size: 1.5em;
+            padding-left: 80px;
+        }
+
+        .progress-bar {
+            width: 90%;
+            overflow: hidden;
+            background: #dad6d6;
+            border-radius: 0px;
+            height: 5px;
+            align-items: center;
+            margin: 40px auto; /* Move progress bar down */
+        }
+
+        .progress {
+            width: 0;
+            height: 100%;
+            background: #1db954;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px; /* Space between buttons */
+            margin-top: 40px; /* Move controls down */
+        }
+
+        .controls button {
+            background: none;
+            fill:white;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            width: 30px; /* Same size as the play button */
+            height: 30px; /* Same size as the play button */
+        }
+
+        .controls button:hover {
+            transform: scale(1.2);
+            filter: brightness(1.5);
+        }
+
+        .controls button img {
+            background: none;
+            fill:white;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            width: 30px; /* Same size as the play button */
+            height: 30px; /* Same size as the play button */
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div> <!-- The overlay div -->
+    <figure>
+        <img src="Screenshot 2024-12-25 112043.png" alt="Album Cover">
+    </figure>
+    </br>
+    <figcaption>Just Wanna Rock</figcaption>
+    <audio id="audio" src="[ytmp3.lat]Lil_Uzi_Vert_-_Just_Wanna_Rock_Official_Visualizer_128kbps.mp3"></audio>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+
+    <!-- Play Controls -->
+    <div class="controls">
+        <!-- Shuffle Button -->
+        <button id="shuffle">
+            <img src="shuffle-svgrepo-com.svg" alt="Shuffle" /> <!-- Your custom shuffle icon -->
+        </button>
+        
+    
+        <!-- Previous Button -->
+        <button id="skip-previous">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 19V5l-7 7z"></path> <!-- Previous icon -->
+            </svg>
+        </button>
+        
+    
+        <!-- Play Button -->
+        <button id="play-pause">
+            <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"></path>
+            </svg>
+            <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display: none;">
+                <path d="M6 19h4V5H6zm8-14v14h4V5z"></path>
+            </svg>
+        </button>
+    
+        <!-- Next Button -->
+        <button id="skip-next">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 5v14l7-7z"></path> <!-- Next icon -->
+            </svg>
+        </button>
+
+        <!-- Loop Button -->
+        <button id="loop">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 6V1l-6 6 6 6V8h6V6zM12 18v5l6-6-6-6v3H6v2h6z"></path> <!-- Loop icon -->
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        const audio = document.getElementById('audio');
+        const playPauseButton = document.getElementById('play-pause');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        const progressBar = document.getElementById('progress');
+        const overlay = document.querySelector('.overlay'); // The overlay div
+
+        // Play/Pause functionality
+        playPauseButton.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+                overlay.style.backgroundColor = 'rgba(29, 185, 84, 0.5)'; // Green overlay when playing
+            } else {
+                audio.pause();
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+                overlay.style.backgroundColor = 'rgba(84, 61, 61, 0.5)'; // Default overlay when paused
+            }
+        });
+
+        // Update progress bar
+        audio.addEventListener('timeupdate', () => {
+            const progress = (audio.currentTime / audio.duration) * 100;
+            progressBar.style.width = `${progress}%`;
+        });
+
+        // Skip Previous (rewind to the beginning)
+        document.getElementById('skip-previous').addEventListener('click', () => {
+            audio.currentTime = 0;
+        });
+
+        // Skip Next (for now, restart the song as a placeholder)
+        document.getElementById('skip-next').addEventListener('click', () => {
+            audio.currentTime = audio.duration - 1;
+            audio.play();
+        });
+
+        // Shuffle functionality (currently just a placeholder)
+        document.getElementById('shuffle').addEventListener('click', () => {
+            console.log('Shuffle button clicked');
+        });
+
+        // Loop functionality (currently just a placeholder)
+        document.getElementById('loop').addEventListener('click', () => {
+            console.log('Loop button clicked');
+        });
+    </script>
+</body>
+</html>
